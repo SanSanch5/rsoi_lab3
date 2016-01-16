@@ -1,0 +1,31 @@
+{% extends "page.html" %}
+
+{% block title %}Авторизация - {{ super() }}{% endblock %}
+
+{% block body %}
+    <h1>Авторизация</h1>
+    <form method="POST">
+        <table>
+            <tbody>
+                <tr>
+                    <td style="text-align:right">Логин:</td>
+                    <td>
+                        <input name="login" pattern="^[A-Za-z]([-_]?[A-Za-z0-9]+)*$">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">Пароль:</td>
+                    <td>
+                        <input name="password" type="password" pattern="^.{3,}$">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:right">
+                        <input type="submit" value="Вход">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+{% endblock  %}

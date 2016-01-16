@@ -1,0 +1,68 @@
+{% extends "page.html" %}
+
+{% macro here() -%}
+  /foods/?per_page={{ per_page }}&page={{ page }}
+{%- endmacro %}
+
+{% block title %}Одежда - {{ super() }}{% endblock %}
+
+{% block body %}
+  <h1>Одежда</h1>
+  <form method="POST">
+    {% if user_name is none %}
+      <a href="/sign_in?redirect_to={{ here() | urlencode }}">Войти</a>
+    {% else %}
+      <a href="/me">{{ user_name }}</a>
+
+      <a href="/order">Оформить заказ</a>
+    {% endif%}
+    {% if page_clothes is not none %}
+      <table>
+        <tbody>
+          <th>Наименование товара</th>
+          <th>Цена</th>
+          {% if user_name is not none %}
+            <th>Количество</th>
+          {% endif %}
+          {% for cloth in page_clothes %}
+            <tr>
+              <td style="text-align:right;border:1px solid">{{ cloth['name'] }}</td>
+              <td style="text-align:right;border:1px solid">{{ cloth['price'] }}</td>
+              {% if user_name is not none %}
+                <td style="text-align:right;border:1px solid">
+                  {{ cloth['quantity'] }}
+                  <form method="POST" action="{{ here() }}" style="display:inline">
+                    <input type="hidden" name="cloth_id" value="{{cloth['id']}}">
+                    <input type="hidden" name="action" value="+">
+                    <input type="submit" value="+">
+                  </form>
+                  <form method="POST" action="{{ here() }}" style="display:inline">
+                    <input type="hidden" name="cloth_id" value="{{cloth['id']}}">
+                    <input type="hidden" name="action" value="-">
+                    <input type="submit" value="-">
+                  </form>
+                </td>
+              {% endif %}
+            </tr>  
+          {% endfor %}
+        </tbody>
+      </table>
+      <span>
+        {% if page != 1 %}
+          <a href="?per_page={{ per_page }}&page=1">Первая страница</a>
+        {% endif %}
+        {% if page > 1 %}
+          <a href="?per_page={{ per_page }}&page={{ page - 1}}">Предыдущая страница</a>
+        {% endif %}
+        {% if page < pages %}
+          <a href="?per_page={{ per_page }}&page={{ page + 1}}">Следующая страница</a>
+        {% endif %}
+        {% if page != pages %}
+          <a href="?per_page={{ per_page }}&page={{ pages }}">Последняя страница</a>
+        {% endif %}
+      </span>
+    {% else %}
+      <p>Ошибка: <em>Одежда недоступна</em></p>
+    {% endif %}
+  </form>
+{% endblock  %}

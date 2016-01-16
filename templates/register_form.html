@@ -1,0 +1,50 @@
+{% extends "page.html" %}
+
+{% block title %}Регистрация - {{ super() }}{% endblock %}
+
+{% block body %}
+    <h1>Регистрация</h1>
+    <form method="POST">
+        <table>
+            <tbody>
+            <tr>
+                <td style="text-align:right">Логин:</td>
+                <td>
+                    <input name="login" pattern="^[A-Za-z]([-_]?[A-Za-z0-9]+)*$">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Пароль:</td>
+                <td>
+                    <input name="password" type="password" pattern="^.{6,}$">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Имя:</td>
+                <td>
+                    <input name="name">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">e-mail:</td>
+                <td>
+                    <input name="email" type="email">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Телефон:</td>
+                <td>
+                    <input name="phone" type="tel">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align:right">
+                    <input type="submit" value="Зарегистрироваться">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+{% endblock  %}
+

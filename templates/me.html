@@ -1,0 +1,52 @@
+{% extends "page.html" %}
+
+{% block title %}Профиль - {{ super() }}{% endblock %}
+
+{% block body %}
+  <h1>Профиль</h1>
+  <form method="POST">
+    {% if user is not none %}
+      <table>
+        <tbody>
+          <tr>
+            <td style="text-align:right" readonly>Никнейм:</td>
+            <td>
+              <input name="login" value="{{ user['login'] }}">
+            </td>
+          </tr>  
+          <tr>
+            <td style="text-align:right">Пароль:</td>
+            <td>
+              <input name="password" type="password" pattern="^.{4,}$">
+            </td>
+          </tr>  
+          <tr>
+            <td style="text-align:right">Имя:</td>
+            <td>
+              <input name="name" {% if user['name'] is not none %}value="{{ user['name'] }}"{% endif %}>
+            </td>
+          </tr>  
+          <tr>
+            <td style="text-align:right">e-mail:</td>
+            <td>
+              <input name="email" type="email" {% if user['email'] is not none %}value="{{ user['email'] }}"{% endif %}>
+            </td>
+          </tr>  
+          <tr>
+            <td style="text-align:right">Телефон:</td>
+            <td>
+              <input name="phone" type="tel" {% if user['phone'] is not none %}value="{{ user['phone'] }}"{% endif %}>
+            </td>
+          </tr>  
+          <tr>
+            <td style="text-align:right">
+              <input type="submit" value="Сохранить изменения">
+            </td>
+          </tr>  
+        </tbody>
+      </table>
+    {% else %}
+      <p>Ошибка: <em>Пользователь недоступен</em></p>
+    {% endif %}
+  </form>
+{% endblock  %}

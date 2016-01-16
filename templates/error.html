@@ -1,0 +1,8 @@
+{% extends "page.html" %}
+
+{% block title %}Ошибка - {{ super() }}{% endblock %}
+
+{% block body %}
+  <h1>Возникла ошибка</h1>
+  <p>{{reason}}</p>
+{% endblock  %}
