@@ -16,9 +16,9 @@ config = {
         'port': 5002,
         'db_uri': 'sqlite:///db/users',
     },       
-    'foods': {
+    'clothes': {
         'port': 5003,
-        'db_uri': 'sqlite:///db/foods',
+        'db_uri': 'sqlite:///db/clothes',
     },       
     'orders': {
         'port': 5004,

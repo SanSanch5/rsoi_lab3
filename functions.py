@@ -27,7 +27,7 @@ def parse_datetime(datetime_string):
 service_uris = {service: 'http://localhost:{}/api/{}'.format(config[service]['port'], service) for service in [
     'sessions',
     'users',
-    'foods',
+    'clothes',
     'orders',
 ]}
 
