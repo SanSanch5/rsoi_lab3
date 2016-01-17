@@ -4,6 +4,7 @@ import simplejson
 from urllib.parse import unquote as urldecode
 
 import flask
+import random
 
 from config import config
 from functions import parse_datetime, render_datetime, \
@@ -13,6 +14,14 @@ from functions import parse_datetime, render_datetime, \
 
 app = flask.Flask(__name__)
 app.config['DEBUG'] = config['debug']
+
+# typical_clothes = ('Джинсы', 'Рубашка', 'Джемпер', 'Сорочка', 'Туфли', 'Носки', 'Галстук', 'Бабочка')
+# typical_colors = ('син.', 'зел.', 'красн.', 'жёлт.', 'бел.', 'оранж.', 'чёрн.')
+# for i in range(200):
+#     requests.post(service_uris['clothes'], json={
+#         'name': random.choice(typical_clothes) + ' ' + random.choice(typical_colors),
+#         'price': random.randrange(20, 200),
+#     })
 
 
 class Session(dict, flask.sessions.SessionMixin):
@@ -233,8 +242,8 @@ def clothes():
 
 
 @app.route('/clothes/', methods=['POST'])
-def post_to_foods():
-    clothes_id = flask.request.form['clothes_id']
+def post_to_clothes():
+    clothes_id = flask.request.form['cloth_id']
     action = flask.request.form['action']
 
     cart = flask.session['cart']
@@ -244,8 +253,9 @@ def post_to_foods():
 
     if action == '+':
         cart[clothes_id] += 1
-    elif action == '-' and cart.get(clothes_id, 0) > 0:
-        cart[clothes_id] -= 1
+    elif action == '-':
+        if cart.get(clothes_id, 0) > 0:
+            cart[clothes_id] -= 1
         if cart[clothes_id] == 0:
             del cart[clothes_id]
 
