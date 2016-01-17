@@ -11,6 +11,7 @@ app.config['DEBUG'] = config['debug']
 app.config['SQLALCHEMY_DATABASE_URI'] = config['users']['db_uri']
 db = flask_sqlalchemy.SQLAlchemy(app)
 
+
 class User(db.Model):
     __tablename__ = 'user'
 
