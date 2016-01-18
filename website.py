@@ -309,6 +309,42 @@ def post_to_order():
     return flask.redirect('/orders/', code=303)
 
 
+@app.route('/orders_all_users/', methods=['GET'])
+def orders_all_users():
+    try:
+        user_response = requests.get(service_uris['users'])
+        if user_response.status_code != 200:
+            return flask.render_template('error.html', reason=user_response.json()), 500
+
+        users = user_response.json()['objects']
+    except requests.exceptions.RequestException:
+        pass
+
+    try:
+        users_with_orders = []
+        all_users = [u['id'] for u in users]
+        resp = requests.get(service_uris['orders'], params={
+            'q': simplejson.dumps({
+                'filters': [
+                    {'name': 'user_id', 'op': 'in', 'val': all_users},
+                ],
+            }),
+        })
+        assert resp.status_code == 200
+
+        resp_json = resp.json()
+        all_orders = resp_json['objects']
+        for user in users:
+            orders = [order for order in all_orders if order['user_id'] == user['id']]
+            user_with_orders = (user['name'], orders)
+            users_with_orders.append(user_with_orders)
+    except requests.exceptions.RequestException:
+        users_with_orders = None
+
+    print(users_with_orders)
+    return flask.render_template('all_orders.html', users=users_with_orders)
+
+
 @app.route('/orders/', methods=['GET'])
 def orders():
     if flask.session.user_id is None:
@@ -343,6 +379,7 @@ def orders():
 
     return flask.render_template('orders.html', user_name=user_name,
                                                 orders=orders)
+
 
 if __name__ == '__main__':
     app.run(port=config['website']['port'])

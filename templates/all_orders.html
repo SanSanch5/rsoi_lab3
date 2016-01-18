@@ -1,0 +1,41 @@
+{% extends "page.html" %}
+
+{% macro here() -%}
+    /orders_all_users/
+{%- endmacro %}
+
+{% block title %}Все заказы - {{ super() }}{% endblock %}
+
+{% block body %}
+    <h1>Все заказы</h1>
+    <form method="POST">
+        {% if users is not none %}
+            {% for user in users %}
+                <td style="text-align:right">Имя пользователя: {{ user[0] }}</td>
+                <table>
+                    <tbody>
+                    <th>Оформлен</th>
+                    <th>Адрес доставки</th>
+                    {% if user_name is not none %}
+                        <th>Доставлено</th>
+                    {% endif %}
+                    {% for order in user[1] %}
+                        <tr>
+                            <td style="text-align:right;border:1px solid">{{ order['opened_at'] }}</td>
+                            <td style="text-align:right;border:1px solid">{{ order['deliver_to'] }}</td>
+                            <td style="text-align:right;border:1px solid">
+                                {% if order['closed_at'] is not none %}
+                                    {{ order['closed_at'] }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <br/>
+            {% endfor %}
+        {% else %}
+            <p>Ошибка: <em>Заказы недоступны</em></p>
+        {% endif %}
+    </form>
+{% endblock  %}
